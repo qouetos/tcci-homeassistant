@@ -42,3 +42,7 @@ actions:
 ```
 
 Note : chaque appui est une donnée de la thérapie. N'automatise pas les boutons `button.tcci_*` sans en avoir l'intention.
+
+## Licence
+
+MIT, voir [LICENSE](LICENSE).
