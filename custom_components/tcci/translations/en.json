@@ -78,6 +78,9 @@
       },
       "lever": {
         "name": "Heure de lever"
+      },
+      "historique": {
+        "name": "Historique des nuits"
       }
     },
     "binary_sensor": {

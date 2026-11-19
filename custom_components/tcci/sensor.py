@@ -53,6 +53,8 @@ SENSORS = [
     TcciSensorDesc(key="sieste", icon="mdi:sofa", value=_st("nap", round), **MIN),
     TcciSensorDesc(key="coucher", icon="mdi:arrow-down-bold", value=_st("bed", fmt)),
     TcciSensorDesc(key="lever", icon="mdi:arrow-up-bold", value=_st("up", fmt)),
+    TcciSensorDesc(key="historique", icon="mdi:calendar-month", state_class=SensorStateClass.MEASUREMENT,
+                   value=lambda d: len(d.get("history") or [])),
 ]
 
 
@@ -62,6 +64,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: TcciConfigEntry, add: Ad
 
 class TcciSensor(TcciEntity, SensorEntity):
     entity_description: TcciSensorDesc
+    _unrecorded_attributes = frozenset({"nuits"})   # liste volumineuse : pas dans la base du recorder
 
     def __init__(self, coord, desc: TcciSensorDesc) -> None:
         super().__init__(coord, desc.key)
@@ -73,6 +76,8 @@ class TcciSensor(TcciEntity, SensorEntity):
 
     @property
     def extra_state_attributes(self) -> dict | None:
+        if self.entity_description.key == "historique":
+            return {"nuits": self.coordinator.data.get("history") or []}
         if self.entity_description.key not in ("sommeil", "efficacite"):
             return None
         d = self.coordinator.data

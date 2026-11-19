@@ -152,3 +152,24 @@ def stats(r: dict) -> dict | None:
         "waso": m[-1]["b"] - m[0]["a"] - tst if m else None,
         "nap": total - tst,
     }
+
+
+def summary(d: str, r: dict) -> dict:
+    """Une nuit resumee pour l'attribut "nuits" du capteur Historique (minutes arrondies, heures HH:MM)."""
+    r = normalize(r)
+    s = stats(r) or {}
+    rnd = lambda k: None if s.get(k) is None else round(s[k])
+    return {"d": d, "validee": bool(r.get("validated")),
+            "coucher": fmt(s.get("bed")), "lever": fmt(s.get("up")),
+            "sommeil": rnd("tst"), "au_lit": rnd("tib"), "efficacite": s.get("se"),
+            "latence": rnd("sol"), "eveils": s.get("nwake"), "eveil_nocturne": rnd("waso"), "sieste": rnd("nap"),
+            "qualite_sommeil": r.get("qs") or None, "qualite_reveil": r.get("qr") or None,
+            "forme_journee": r.get("fj") or None}
+
+
+def history(saved: dict, cur: date, cur_row: dict) -> list[dict]:
+    """Nuits enregistrees + nuit en cours (pre-remplie si pas encore enregistree, omise si vide), la plus recente d'abord."""
+    nights = {d: r for d, r in (saved or {}).items() if r}
+    if cur_row.get("arrows") or cur_row.get("segs") or cur_row.get("s"):   # le soir avant le coucher : rien a montrer
+        nights[cur.isoformat()] = cur_row
+    return [summary(d, nights[d]) for d in sorted(nights, reverse=True)]

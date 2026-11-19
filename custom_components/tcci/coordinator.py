@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import logging
+import time
+from datetime import timedelta
 from typing import Any
 
 import aiohttp
@@ -12,7 +14,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import dt as dt_util
 
 from . import logic
-from .const import DOMAIN, EVENT_TCCI, SCAN_INTERVAL
+from .const import DOMAIN, EVENT_TCCI, HISTORY_DAYS, HISTORY_INTERVAL, SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,6 +51,9 @@ class TcciCoordinator(DataUpdateCoordinator[dict]):
         super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL)
         self.api = api
         self._last_t: int | None = None
+        self._saved: dict = {}           # nuits enregistrees (historique), relues toutes les HISTORY_INTERVAL s
+        self._saved_key: tuple | None = None
+        self._saved_at = 0.0
 
     async def _async_update_data(self) -> dict:
         try:
@@ -64,6 +69,12 @@ class TcciCoordinator(DataUpdateCoordinator[dict]):
             else:
                 events = await self.api.get(f"/api/events?from={int(ws.timestamp()) - 43200}&to={int(we.timestamp())}") or []
                 row = logic.derive(events, d, tz, settings, now)
+            # historique : relu si la nuit en cours change, si elle vient d'etre enregistree/validee, sinon toutes les 5 min
+            key = (d, bool(saved), bool(saved and saved.get("validated")))
+            if key != self._saved_key or time.monotonic() - self._saved_at > HISTORY_INTERVAL:
+                frm = (d - timedelta(days=HISTORY_DAYS)).isoformat()
+                self._saved = await self.api.get(f"/api/nights?from={frm}&to={d.isoformat()}") or {}
+                self._saved_key, self._saved_at = key, time.monotonic()
         except TcciAuthError as err:
             raise ConfigEntryAuthFailed("Jeton TCCI refusé") from err   # HA propose de saisir un nouveau jeton
         except (aiohttp.ClientError, TimeoutError, ValueError) as err:
@@ -78,4 +89,5 @@ class TcciCoordinator(DataUpdateCoordinator[dict]):
             })
         self._last_t = last_t
         return {"status": status, "night": d, "row": row, "stats": logic.stats(row),
-                "validated": bool(saved and saved.get("validated"))}
+                "validated": bool(saved and saved.get("validated")),
+                "history": logic.history(self._saved, d, row)}

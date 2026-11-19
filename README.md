@@ -25,6 +25,7 @@ Ensuite : *Paramètres → Appareils et services*. Le boîtier est découvert au
 | `binary_sensor.tcci_au_lit` | au lit ou non |
 | `sensor.tcci_dernier_appui` | horodatage du dernier appui |
 | temps de sommeil, temps au lit, efficacité, latence, éveils, éveil nocturne, sieste, coucher, lever | nuit en cours ou dernière nuit |
+| historique des nuits | nombre de nuits ; attribut `nuits` = les 60 dernières nuits, la plus récente d'abord (`d`, `validee`, `coucher`, `lever`, `sommeil`, `au_lit`, `efficacite`, `latence`, `eveils`, `eveil_nocturne`, `sieste`, `qualite_sommeil`, `qualite_reveil`, `forme_journee`). Sert à naviguer de nuit en nuit dans un tableau de bord. |
 | `button.tcci_bouton_1/2`, `button.tcci_annuler` | les boutons du boîtier |
 
 Mise à jour toutes les 20 s. Les `entity_id` exacts sont visibles sur la page de l'appareil.
