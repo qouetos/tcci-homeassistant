@@ -1,5 +1,7 @@
 # TCCI : agenda du sommeil pour Home Assistant
 
+<img src="custom_components/tcci/brand/icon@2x.png" width="96" alt="">
+
 Intégration Home Assistant pour **TCCI**, un boîtier ESP32 à 2 boutons posé à côté du lit, qui tient l'agenda du sommeil d'une thérapie TCC-I (insomnie). Elle fonctionne avec le boîtier en local (`http://tcci.local`) ou avec le serveur cloud TCCI.
 
 ## Installation
@@ -42,6 +44,10 @@ actions:
 ```
 
 Note : chaque appui est une donnée de la thérapie. N'automatise pas les boutons `button.tcci_*` sans en avoir l'intention.
+
+## Icône
+
+L'icône est livrée dans `custom_components/tcci/brand/`. Home Assistant l'affiche à partir de la version 2026.3 ; les versions plus anciennes montrent une icône générique.
 
 ## Licence
 
