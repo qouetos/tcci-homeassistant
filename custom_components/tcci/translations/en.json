@@ -1,0 +1,39 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "TCCI - Agenda du sommeil",
+        "description": "Adresse du boîtier (http://tcci.local) ou du serveur cloud TCCI. Cloud : jeton d'accès créé sur la page TCCI (Réglages → Jetons d'accès). Boîtier : son code d'accès s'il en a un.",
+        "data": { "url": "URL", "token": "Jeton (cloud) ou code d'accès (boîtier)" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Connexion impossible",
+      "invalid_auth": "Jeton refusé",
+      "not_tcci": "Ce n'est pas un boîtier ou serveur TCCI"
+    },
+    "abort": { "already_configured": "Déjà configuré" }
+  },
+  "entity": {
+    "sensor": {
+      "etat": { "name": "État", "state": { "leve": "Levé", "au_lit": "Au lit", "eveille": "Éveillé au lit" } },
+      "dernier_appui": { "name": "Dernier appui" },
+      "sommeil": { "name": "Temps de sommeil" },
+      "temps_au_lit": { "name": "Temps au lit" },
+      "efficacite": { "name": "Efficacité du sommeil" },
+      "latence": { "name": "Latence d'endormissement" },
+      "eveils": { "name": "Éveils" },
+      "eveil_nocturne": { "name": "Éveil nocturne" },
+      "sieste": { "name": "Sieste" },
+      "coucher": { "name": "Heure de coucher" },
+      "lever": { "name": "Heure de lever" }
+    },
+    "binary_sensor": { "au_lit": { "name": "Au lit" } },
+    "button": {
+      "bouton_1": { "name": "Bouton 1 (coucher / lever)" },
+      "bouton_2": { "name": "Bouton 2 (réveil / rendormi)" },
+      "annuler": { "name": "Annuler le dernier appui" }
+    }
+  }
+}
