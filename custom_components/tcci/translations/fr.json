@@ -5,35 +5,96 @@
       "user": {
         "title": "TCCI - Agenda du sommeil",
         "description": "Adresse du boîtier (http://tcci.local) ou du serveur cloud TCCI. Cloud : jeton d'accès créé sur la page TCCI (Réglages → Jetons d'accès). Boîtier : son code d'accès s'il en a un.",
-        "data": { "url": "URL", "token": "Jeton (cloud) ou code d'accès (boîtier)" }
+        "data": {
+          "url": "URL",
+          "token": "Jeton (cloud) ou code d'accès (boîtier)"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigurer TCCI",
+        "description": "Change l'adresse et/ou le jeton. Les entités et leurs entity_id sont conservés.\nAdresse actuelle : {url}\nJeton : laisse vide pour garder le jeton actuel.",
+        "data": {
+          "url": "URL",
+          "token": "Nouveau jeton (vide = inchangé)",
+          "clear_token": "Supprimer le jeton (boîtier sans code d'accès)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Jeton TCCI refusé",
+        "description": "Le jeton pour {url} a été refusé (révoqué ou expiré). Crée un nouveau jeton sur la page TCCI (Réglages → Jetons d'accès) et colle-le ici.",
+        "data": {
+          "token": "Nouveau jeton"
+        }
       }
     },
     "error": {
       "cannot_connect": "Connexion impossible",
       "invalid_auth": "Jeton refusé",
-      "not_tcci": "Ce n'est pas un boîtier ou serveur TCCI"
+      "not_tcci": "Ce n'est pas un boîtier ou serveur TCCI",
+      "already_configured": "Déjà configuré (une autre entrée TCCI utilise cette adresse)"
     },
-    "abort": { "already_configured": "Déjà configuré" }
+    "abort": {
+      "already_configured": "Déjà configuré",
+      "reconfigure_successful": "Configuration mise à jour",
+      "reauth_successful": "Jeton mis à jour"
+    }
   },
   "entity": {
     "sensor": {
-      "etat": { "name": "État", "state": { "leve": "Levé", "au_lit": "Au lit", "eveille": "Éveillé au lit" } },
-      "dernier_appui": { "name": "Dernier appui" },
-      "sommeil": { "name": "Temps de sommeil" },
-      "temps_au_lit": { "name": "Temps au lit" },
-      "efficacite": { "name": "Efficacité du sommeil" },
-      "latence": { "name": "Latence d'endormissement" },
-      "eveils": { "name": "Éveils" },
-      "eveil_nocturne": { "name": "Éveil nocturne" },
-      "sieste": { "name": "Sieste" },
-      "coucher": { "name": "Heure de coucher" },
-      "lever": { "name": "Heure de lever" }
+      "etat": {
+        "name": "État",
+        "state": {
+          "leve": "Levé",
+          "au_lit": "Au lit",
+          "eveille": "Éveillé au lit"
+        }
+      },
+      "dernier_appui": {
+        "name": "Dernier appui"
+      },
+      "sommeil": {
+        "name": "Temps de sommeil"
+      },
+      "temps_au_lit": {
+        "name": "Temps au lit"
+      },
+      "efficacite": {
+        "name": "Efficacité du sommeil"
+      },
+      "latence": {
+        "name": "Latence d'endormissement"
+      },
+      "eveils": {
+        "name": "Éveils"
+      },
+      "eveil_nocturne": {
+        "name": "Éveil nocturne"
+      },
+      "sieste": {
+        "name": "Sieste"
+      },
+      "coucher": {
+        "name": "Heure de coucher"
+      },
+      "lever": {
+        "name": "Heure de lever"
+      }
     },
-    "binary_sensor": { "au_lit": { "name": "Au lit" } },
+    "binary_sensor": {
+      "au_lit": {
+        "name": "Au lit"
+      }
+    },
     "button": {
-      "bouton_1": { "name": "Bouton 1 (coucher / lever)" },
-      "bouton_2": { "name": "Bouton 2 (réveil / rendormi)" },
-      "annuler": { "name": "Annuler le dernier appui" }
+      "bouton_1": {
+        "name": "Bouton 1 (coucher / lever)"
+      },
+      "bouton_2": {
+        "name": "Bouton 2 (réveil / rendormi)"
+      },
+      "annuler": {
+        "name": "Annuler le dernier appui"
+      }
     }
   }
 }

@@ -6,6 +6,7 @@ from typing import Any
 
 import aiohttp
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
@@ -64,7 +65,7 @@ class TcciCoordinator(DataUpdateCoordinator[dict]):
                 events = await self.api.get(f"/api/events?from={int(ws.timestamp()) - 43200}&to={int(we.timestamp())}") or []
                 row = logic.derive(events, d, tz, settings, now)
         except TcciAuthError as err:
-            raise UpdateFailed("Jeton TCCI refusé") from err
+            raise ConfigEntryAuthFailed("Jeton TCCI refusé") from err   # HA propose de saisir un nouveau jeton
         except (aiohttp.ClientError, TimeoutError, ValueError) as err:
             raise UpdateFailed(f"TCCI injoignable : {err}") from err
 
